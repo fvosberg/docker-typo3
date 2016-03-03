@@ -47,7 +47,9 @@ RUN usermod -u 1000 www-data
 
 ADD apache-virtual-host.conf /etc/apache2/sites-available/typo3.conf
 RUN a2ensite typo3
-RUN touch /etc/apache2/iwashere
+RUN ln -s ../mods-available/rewrite.load /etc/apache2/mods-enabled/
+RUN ln -s ../mods-available/headers.load /etc/apache2/mods-enabled/
+RUN ln -s ../mods-available/expires.load /etc/apache2/mods-enabled/
 
 RUN echo 'alias ll="ls -lisah"' >> ~/.bashrc
 

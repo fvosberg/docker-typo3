@@ -7,9 +7,16 @@ services:
             - "80:80"
         depends_on:
             - db
+        links:
+            - db
         volumes:
             - .:/app
+        environment:
+            - TYPO3_CONTEXT=Development/Docker
     db:
         image: mysql
         environment:
             - MYSQL_RANDOM_ROOT_PASSWORD=yes
+            - MYSQL_DATABASE=dev
+            - MYSQL_USER=dev
+            - MYSQL_PASSWORD=dev

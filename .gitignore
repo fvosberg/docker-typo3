@@ -1,1 +1,7 @@
 /vendor/
+/web/fileadmin/
+/web/typo3conf/LocalConfiguration.php
+/web/typo3conf/ext/
+/web/typo3conf/l10n/
+/web/typo3temp/
+/web/uploads/
