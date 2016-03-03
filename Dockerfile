@@ -13,6 +13,10 @@ ENTRYPOINT ["/usr/sbin/apache2ctl"]
 CMD ["-D", "FOREGROUND"]
 VOLUME ["/var/log/apache2"]
 
+# give the apache user the uid 1000 because new files in the mounted Volume gets 
+# the owner uid 1000 and apache must be able to write to these folders
+RUN usermod -u 1000 www-data
+
 ADD apache-virtual-host.conf /etc/apache2/sites-available/typo3.conf
 RUN a2ensite typo3
 RUN touch /etc/apache2/iwashere
