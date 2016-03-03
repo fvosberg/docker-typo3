@@ -5,9 +5,37 @@ RUN apt-get update && apt-get install -y \
 	vim \
 	curl \
 	git \
-	unzip
+	unzip \
+	graphicsmagick \
+	wget \
+	libpng3 \
+	aptitude
 
-RUN docker-php-ext-install -j$(nproc) iconv
+RUN curl https://www.dotdeb.org/dotdeb.gpg | apt-key add -
+RUN echo "deb http://packages.dotdeb.org jessie all" >> /etc/apt/sources.list
+RUN echo "deb-src http://packages.dotdeb.org jessie all" >> /etc/apt/sources.list
+
+
+RUN apt-get update && apt-get install -y \
+	php7.0-mysql \
+	php7.0-bz2 \
+	php7.0-curl \
+	php7.0-opcache \
+	php7.0-imagick \
+	php7.0-xdebug \
+	php7.0-gd
+
+RUN pear install soap-beta
+
+RUN echo "extension_dir=\"/usr/lib/php/20151012\"" >> /usr/local/etc/php/conf.d/php.ini
+RUN ln -s /etc/php/mods-available/gd.ini /usr/local/etc/php/conf.d/
+RUN ln -s /etc/php/mods-available/imagick.ini /usr/local/etc/php/conf.d/
+RUN ln -s /etc/php/mods-available/mysqli.ini /usr/local/etc/php/conf.d/
+RUN ln -s /etc/php/mods-available/opcache.ini /usr/local/etc/php/conf.d/
+RUN ln -s /etc/php/mods-available/xdebug.ini /usr/local/etc/php/conf.d/
+
+
+# RUN docker-php-ext-install -j$(nproc) 
 
 ENTRYPOINT ["/usr/sbin/apache2ctl"]
 CMD ["-D", "FOREGROUND"]
@@ -24,11 +52,11 @@ RUN touch /etc/apache2/iwashere
 RUN echo 'alias ll="ls -lisah"' >> ~/.bashrc
 
 RUN mkdir /app
-ADD . /app
 WORKDIR /app
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Copy the composer.json as well as the composer.lock and install 
 # the dependencies. This is a separate step so the dependencies 
