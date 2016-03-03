@@ -13,7 +13,7 @@ ENTRYPOINT ["/usr/sbin/apache2ctl"]
 CMD ["-D", "FOREGROUND"]
 VOLUME ["/var/log/apache2"]
 
-ADD docker/apache.conf /etc/apache2/sites-available/typo3.conf
+ADD apache-virtual-host.conf /etc/apache2/sites-available/typo3.conf
 RUN a2ensite typo3
 RUN touch /etc/apache2/iwashere
 
