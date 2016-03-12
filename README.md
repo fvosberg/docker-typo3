@@ -7,9 +7,14 @@
 
 # TYPO3 Environments
 
-If the hostname ends on production the TYPO3_CONTEXT is set to Production/Docker. 
+If the hostname ends on production the TYPO3_CONTEXT is set to Production/Docker.
 Otherwise it is Development/Docker
 
+# Introduction package
+
+If you just want to develop an extension or tinker a little bit around install the introduction package to have a nice point to start from.
+
+	composer require 'typo3-ter/introduction'
 
 # TODO
 
