@@ -1,6 +1,9 @@
 FROM php:7.0-apache
 MAINTAINER Frederik Vosberg <frederik@rattazonk.com>
 
+# needed for virtual machine configuration
+ENV APACHE_LOG_DIR /var/log/apache
+
 RUN apt-get update && apt-get install -y \
 	vim \
 	curl \
@@ -29,12 +32,20 @@ RUN pecl install xdebug \
 	&& docker-php-ext-enable xdebug
 RUN docker-php-ext-install opcache
 
+RUN mkdir /var/log/php
+RUN chmod go+w /var/log/php
+
 RUN echo 'xdebug.max_nesting_level=400' >> /usr/local/etc/php/php.ini
 RUN echo 'max_input_vars=1500' >> /usr/local/etc/php/php.ini
 RUN echo 'max_execution_time=240' >> /usr/local/etc/php/php.ini
+RUN echo 'error_log=/var/log/php/errors.log' >> /usr/local/etc/php/php.ini
+RUN echo 'log_errors=On' >> /usr/local/etc/php/php.ini
+RUN echo 'error_reporting=E_ALL' >> /usr/local/etc/php/php.ini
+RUN echo 'session.save_path=/tmp' >> /usr/local/etc/php/php.ini
+RUN echo 'date.timezone=Europe/Berlin' >> /usr/local/etc/php/php.ini
 
-ENTRYPOINT ["/usr/sbin/apache2ctl"]
-CMD ["-D", "FOREGROUND"]
+#ENTRYPOINT ["/usr/sbin/apache2ctl"]
+CMD ["apache2-foreground"]
 VOLUME ["/var/log/apache2"]
 
 # give the apache user the uid 1000 because new files in the mounted Volume gets
