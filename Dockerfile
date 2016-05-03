@@ -2,7 +2,7 @@ FROM php:7.0-apache
 MAINTAINER Frederik Vosberg <frederik@rattazonk.com>
 
 # needed for virtual machine configuration
-ENV APACHE_LOG_DIR /var/log/apache
+ENV APACHE_LOG_DIR /var/log/apache2
 
 RUN apt-get update && apt-get install -y \
 	vim \
