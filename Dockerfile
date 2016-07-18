@@ -53,6 +53,7 @@ VOLUME ["/var/log/apache2"]
 RUN usermod -u 1000 www-data
 
 ADD apache-virtual-host.conf /etc/apache2/sites-available/typo3.conf
+RUN a2dissite *default
 RUN a2ensite typo3
 RUN a2enmod rewrite
 RUN a2enmod headers
